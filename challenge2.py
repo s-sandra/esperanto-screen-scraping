@@ -24,24 +24,41 @@ for word_cols in words_tds:
 
         root = root.strip("\n") # removes new line characters
 
+        if root.endswith("o"):
+            pos = "N" # noun
+
+        if root.endswith("a"):
+            pos = "A" # adjective
+
+        if root.endswith("-"):
+            pos = "pre"
+
+        if root.startswith("-"):
+            pos = "suf"
+
         # checks if the word has a font-weight style
         if style:
             if "bold" in style["style"]:
                 common = True
 
-        # checks if the word has a color style
-        if "style" in color:
-            color = color["style"]
+        if root.endswith("i"):
 
-            if "255" in color: # red has r value of 255.
+            # checks if the word has a color style
+            if "style" in color:
+                color = color["style"]
 
-                # only an intransitive verb if root ends with "i".
-                pos = "VI"
+                if "255" in color: # red has r value of 255.
 
-            if "51" in color: # blue has g value of 204
+                    # only an intransitive verb if root ends with "i".
+                    pos = "VI"
 
-                # only a transitive/intransitive verb if root ends with "i"
-                pos = "VTI"
+                elif "51" in color: # green has g value of 204
+
+                    # only a transitive/intransitive verb if root ends with "i"
+                    pos = "VTI"
+
+            else: # otherwise, the word must be blue and a transitive verb
+                 pos = "VT"
 
         rows.append({"root" : root, "pos" : pos, "common" : common})
 
