@@ -14,10 +14,11 @@ rows = []
 # gets all the words in each ordered list.
 for word_cols in words_tds:
     words = word_cols.find_all("li")
-    common = False
-    pos = "misc" # the default part of speech is misc.
 
     for word in words:
+        common = False
+        pos = "misc" # the default part of speech is misc.
+
         root = word.get_text()
         style = word.attrs # might have bold style, indicating a common word.
         color = word.a.attrs # might be red or green. Otherwise, blue.
@@ -62,5 +63,5 @@ for word_cols in words_tds:
 
         rows.append({"root" : root, "pos" : pos, "common" : common})
 
-esperanto = pd.DataFrame(rows)
+esperanto = pd.DataFrame(rows)[["root","pos", "common"]]
 print(esperanto)
