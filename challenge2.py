@@ -32,10 +32,10 @@ for word_cols in words_tds:
             pos = "A" # adjective
 
         if root.endswith("-"):
-            pos = "pre"
+            pos = "pre" # prefix
 
         if root.startswith("-"):
-            pos = "suf"
+            pos = "suf" # suffix
 
         # checks if the word has a font-weight style
         if style:
@@ -64,4 +64,5 @@ for word_cols in words_tds:
         rows.append({"root" : root, "pos" : pos, "common" : common})
 
 esperanto = pd.DataFrame(rows)[["root","pos", "common"]]
-print(esperanto)
+esperanto = esperanto.set_index("root")
+esperanto.to_csv("./esperanto.csv", encoding="utf8")
