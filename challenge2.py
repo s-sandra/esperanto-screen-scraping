@@ -16,14 +16,9 @@ for word_cols in words_tds:
     words = word_cols.find_all("li")
 
     for word in words:
-        common = False
         pos = "misc" # the default part of speech is misc.
-
         root = word.get_text()
-        style = word.attrs # might have bold style, indicating a common word.
-        color = word.a.attrs # <a> tag sometimes contains red or green color styles. Otherwise, blue.
-
-        root = root.rstrip().strip() # removes new line characters and trailing and leading whitespace.
+        root = root.rstrip().strip() # removes trailing and leading whitespace and newline characters.
 
         if root.endswith("o"):
             pos = "N" # noun
@@ -37,42 +32,39 @@ for word_cols in words_tds:
         if root.startswith("-"):
             pos = "suf" # suffix
 
-        # checks if the word has a font-weight style somewhere.
-        if style: # if the <li> tag has a style attribute.
-            if "bold" in style["style"]:
-                common = True
+        common = False
+        li_attrs = word.attrs # might have bold style, indicating a common word.
+        bold_style = word.select("[style*=bold]") # tags underneath <li> might have bold style.
 
-        elif word.span: # if the <li> element contains a span tag with a style attribute.
-            if "bold" in word.span.attrs["style"]:
+        # checks if the word has a bold font-weight style.
+        if "style" in li_attrs: # if the <li> tag has a bold style attribute.
+            if "bold" in li_attrs["style"]:
                 common = True
+        elif bold_style: # if a tag underneath <li> has a bold style attribute.
+            common = True
 
-        elif "style" in color: # if <a> tag under <li> has a bold font-weight attribute.
-            if "bold" in color["style"]:
-                common = True
+        color_style = word.select("a[style*=color]") # <a> might have red or green color style.
 
         if root.endswith("i") and pos != "suf":
 
             # checks if the word has a color style.
-            if "style" in color:
-                color = color["style"]
+            if color_style:
 
-                if "255" in color: # red has r value of 255.
+                # removes whitespace and newline characters within style attribute.
+                color_style = color_style[0]["style"].replace("\n","").replace(" ", "")
 
-                    # only an intransitive verb if root ends with "i".
-                    pos = "VI"
+                if "rgb(255,0,0)" in color_style: # red has rgb value of 255,0,0.
+                    pos = "VI" # only an intransitive verb if red.
 
-                elif "51" in color: # green has g value of 204.
-
-                    # only a transitive/intransitive verb if root ends with "i."
-                    pos = "VTI"
+                elif "rgb(51,204,0)" in color_style: # green has rgb value of 51,204.,0
+                    pos = "VTI"  # only a transitive/intransitive verb if green.
 
             else: # otherwise, the word must be blue and a transitive verb.
-                 pos = "VT"
+                pos = "VT"
 
         rows.append({"root" : root, "pos" : pos, "common" : common})
 
 esperanto = pd.DataFrame(rows)[["root","pos", "common"]]
 esperanto = esperanto.set_index("root") # sets the index to root.
-esperanto.to_csv("./esperanto.csv", encoding="utf8")
 
 # fumo is green, but it ends with an "o". -i starts with a hyphen, but it's blue and ends with an i.
