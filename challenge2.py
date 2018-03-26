@@ -21,9 +21,9 @@ for word_cols in words_tds:
 
         root = word.get_text()
         style = word.attrs # might have bold style, indicating a common word.
-        color = word.a.attrs # might be red or green. Otherwise, blue.
+        color = word.a.attrs # <a> tag sometimes contains red or green color styles. Otherwise, blue.
 
-        root = root.strip("\n") # removes new line characters
+        root = root.rstrip().strip() # removes new line characters and trailing and leading whitespace.
 
         if root.endswith("o"):
             pos = "N" # noun
@@ -37,14 +37,22 @@ for word_cols in words_tds:
         if root.startswith("-"):
             pos = "suf" # suffix
 
-        # checks if the word has a font-weight style
-        if style:
+        # checks if the word has a font-weight style somewhere.
+        if style: # if the <li> tag has a style attribute.
             if "bold" in style["style"]:
                 common = True
 
-        if root.endswith("i"):
+        elif word.span: # if the <li> element contains a span tag with a style attribute.
+            if "bold" in word.span.attrs["style"]:
+                common = True
 
-            # checks if the word has a color style
+        elif "style" in color: # if <a> tag under <li> has a bold font-weight attribute.
+            if "bold" in color["style"]:
+                common = True
+
+        if root.endswith("i") and pos != "suf":
+
+            # checks if the word has a color style.
             if "style" in color:
                 color = color["style"]
 
@@ -53,16 +61,18 @@ for word_cols in words_tds:
                     # only an intransitive verb if root ends with "i".
                     pos = "VI"
 
-                elif "51" in color: # green has g value of 204
+                elif "51" in color: # green has g value of 204.
 
-                    # only a transitive/intransitive verb if root ends with "i"
+                    # only a transitive/intransitive verb if root ends with "i."
                     pos = "VTI"
 
-            else: # otherwise, the word must be blue and a transitive verb
+            else: # otherwise, the word must be blue and a transitive verb.
                  pos = "VT"
 
         rows.append({"root" : root, "pos" : pos, "common" : common})
 
 esperanto = pd.DataFrame(rows)[["root","pos", "common"]]
-esperanto = esperanto.set_index("root")
+esperanto = esperanto.set_index("root") # sets the index to root.
 esperanto.to_csv("./esperanto.csv", encoding="utf8")
+
+# fumo is green, but it ends with an "o". -i starts with a hyphen, but it's blue and ends with an i.

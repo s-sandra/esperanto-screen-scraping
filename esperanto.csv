@@ -49,7 +49,7 @@ arto,N,True
 artikolo,N,True
 -as,suf,True
 asocio,N,True
- aspekti,VI,False
+aspekti,VI,False
 -at,suf,True
 ataki,VT,False
 atendi,VT,False
@@ -60,34 +60,7 @@ avo,N,False
 aŭ,misc,False
 aŭdi,VT,False
 aŭskulti,VT,False
-"aŭt(omobil)o
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              ",misc,False
+aŭt(omobil)o,N,False
 aŭtobuso,N,False
 aŭtuno,N,False
 azeno,N,False
@@ -143,7 +116,7 @@ cirklo,N,False
 ĉesi,VI,False
 ĉevalo,N,False
 ĉi,VT,True
-ĉia,A,False
+ĉia,A,True
 ĉiam,misc,True
 ĉie,misc,True
 ĉielo,N,True
@@ -229,7 +202,7 @@ erari,VI,False
 esperi,VT,True
 esplori,VT,False
 esprimi,VT,False
-esti,VI,False
+esti,VI,True
 estimi,VT,False
 -estr,suf,True
 -et,suf,True
@@ -334,7 +307,7 @@ horo,N,True
 horloĝo,N,False
 hotelo,N,False
 hundo,N,False
--i,VT,True
+-i,suf,True
 ia,A,True
 iam,misc,True
 -id,suf,True
@@ -632,7 +605,7 @@ nova,A,True
 novembro,N,True
 nu,misc,False
 nubo,N,False
-nulo,N,False
+nulo,N,True
 numero,N,True
 nun,misc,True
 nur,misc,True
@@ -798,7 +771,7 @@ renkonti,VT,True
 respondi,VT,True
 resti,VI,True
 revuo,N,True
-rezulti ,misc,False
+rezulti,VI,False
 ricevi,VT,True
 riĉa,A,True
 ridi,VI,True
@@ -897,7 +870,7 @@ sufiĉa,A,True
 sukcesi,VI,True
 sukero,N,False
 sumo,N,False
-suno ,misc,True
+suno,N,True
 super,misc,True
 supozi,VT,False
 supre,misc,True
@@ -977,8 +950,7 @@ tuta,A,True
 -u,suf,True
 -uj,suf,True
 -ul,suf,True
-"-um
- ",suf,True
+-um,suf,True
 universala,A,True
 universitato,N,True
 unu,misc,True
